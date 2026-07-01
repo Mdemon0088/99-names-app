@@ -1,0 +1,21 @@
+{
+  "name": "99 Names App",
+  "short_name": "99 Names",
+  "description": "A serene, Duolingo-inspired learning app for the 99 Beautiful Names of Allah.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0D1B2A",
+  "theme_color": "#0D1B2A",
+  "lang": "bn",
+  "dir": "auto",
+  "categories": ["education", "lifestyle", "religion"],
+  "icons": [
+    {
+      "src": "assets/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
