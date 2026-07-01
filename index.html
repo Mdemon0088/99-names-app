@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Asma’ul Husna Learning Studio</title>
   <meta name="theme-color" content="#0D1B2A" />
+  <link rel="manifest" href="/manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -398,11 +399,14 @@
       let isFeedbackOpen = false;
       let isGameOver = false;
       let lastFeedbackCorrect = true;
+      let activeLesson = null;
       let matchRightShuffled = shuffle(['প্রকৃত রাজা','পরম দয়াময়','অতি পবিত্র']);
       const $ = (sel) => document.querySelector(sel);
       const stage = $('#stage');
       const supportsSpeech = 'speechSynthesis' in window;
       let selectedVoice = null;
+
+      const refs = {};
       const lesson = [
         { id:'flashcard', type:'flashcard', title:'Lesson 1 • Flashcard', pathIndex:0 },
         { id:'match', type:'match', title:'Lesson 2 • Match the pairs', pathIndex:1 },
@@ -417,14 +421,93 @@
       const builderBank = ['م','ا','ح','ل','ي','ر','ن','ب','د'];
 
       init();
-      function init(){ bindUI(); hydrateVoices(); render(); renderPathRail(); maybeCelebrateFromStorage(); }
-      function loadState(){ try{ const raw = localStorage.getItem(storeKey); if(!raw) return {...defaultState}; const parsed = JSON.parse(raw); return {...defaultState, ...parsed, matchSolved: parsed.matchSolved || [], builderInput: parsed.builderInput || []}; } catch { return {...defaultState}; } }
+
+      function init(){
+        bindUI();
+        hydrateVoices();
+        render();
+        renderPathRail();
+        maybeCelebrateFromStorage();
+        registerServiceWorker();
+      }
+
+      function registerServiceWorker(){
+        if('serviceWorker' in navigator){
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js').catch(err => console.warn('SW registration failed', err));
+          });
+        }
+      }
+
+      function loadState(){
+        try{
+          const raw = localStorage.getItem(storeKey);
+          if(!raw) return {...defaultState};
+          const parsed = JSON.parse(raw);
+          return {...defaultState, ...parsed, matchSolved: parsed.matchSolved || [], builderInput: parsed.builderInput || []};
+        } catch {
+          return {...defaultState};
+        }
+      }
+
       function saveState(){ localStorage.setItem(storeKey, JSON.stringify(state)); }
-      function bindUI(){ $('#restartBtn').addEventListener('click', resetLesson); $('#retryBtn').addEventListener('click', resetLesson); $('#replayBtn').addEventListener('click', resetLesson); $('#nextLessonBtn').addEventListener('click', resetLesson); $('#hintBtn').addEventListener('click', showHint); $('#checkBtn').addEventListener('click', onCheck); $('#feedbackOverlay').addEventListener('click', closeFeedback); $('#continueBtn').addEventListener('click', closeFeedback); document.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !isFeedbackOpen) onCheck(); if(e.key === 'Escape' && isFeedbackOpen) closeFeedback(); }); }
-      function hydrateVoices(){ if(!supportsSpeech) return; const update = () => { const voices = speechSynthesis.getVoices(); selectedVoice = voices.find(v => /ar/i.test(v.lang || '') || /arab/i.test(v.name || '')) || voices[0] || null; }; update(); speechSynthesis.onvoiceschanged = update; }
-      function syncTopBar(){ const pct = Math.round((state.stepIndex / lesson.length) * 100); $('#progressText').textContent = `${pct}%`; $('#progressBar').style.width = `${Math.min(pct, 100)}%`; $('#hearts').textContent = '❤️'.repeat(state.hearts) + '🖤'.repeat(Math.max(0, 5 - state.hearts)); $('#xp').textContent = `${state.xp} XP`; $('#streak').innerHTML = `<span class="text-amber-300"><i class="fa-solid fa-lamp-desk"></i></span><span>${state.streak} Days</span>`; }
-      function render(){ syncTopBar(); renderPathRail(); const current = lesson[state.stepIndex]; if(!current){ completeLesson(); return; } $('#lessonTitle').textContent = current.title; $('#stepPill').textContent = `Step ${state.stepIndex + 1} of ${lesson.length}`; stage.innerHTML = ''; if(current.type === 'flashcard') renderFlashcard(current); if(current.type === 'match') renderMatch(); if(current.type === 'builder') renderBuilder(); stage.classList.remove('shake'); stage.classList.add('fade-enter'); setTimeout(() => stage.classList.remove('fade-enter'), 300); saveState(); }
-      function renderPathRail(){ const rail = $('#pathRail'); const currentIndex = Math.min(state.stepIndex, lessonPath.length - 1); const start = Math.max(0, currentIndex - 2); const end = Math.min(lessonPath.length, start + 8); rail.innerHTML = `<div class="flex gap-2 min-w-max">${lessonPath.slice(start, end).map((item, idx) => { const absoluteIndex = start + idx; const isCurrent = absoluteIndex === currentIndex; const isDone = absoluteIndex < currentIndex; const btnClass = isDone ? 'bg-emerald-400/20 text-emerald-200' : isCurrent ? 'bg-amber-300/20 text-amber-100 pulse-ring' : 'bg-white/6 text-white/55'; return `<div class="btn ${btnClass} rounded-2xl px-3 py-2 min-w-[130px] text-left border border-white/10 ${isCurrent ? 'shadow-[0_0_0_6px_rgba(233,196,106,.08)]' : ''}"><div class="text-[10px] uppercase tracking-[0.22em] opacity-70">${absoluteIndex + 1}/99</div><div class="arabic font-bold text-base leading-tight truncate">${item.arabic}</div><div class="text-[11px] opacity-70 truncate">${item.translit}</div></div>`; }).join('')}</div>`; }
+
+      function bindUI(){
+        $('#restartBtn').addEventListener('click', resetLesson);
+        $('#retryBtn').addEventListener('click', resetLesson);
+        $('#replayBtn').addEventListener('click', resetLesson);
+        $('#nextLessonBtn').addEventListener('click', resetLesson);
+        $('#hintBtn').addEventListener('click', showHint);
+        $('#checkBtn').addEventListener('click', onCheck);
+        $('#feedbackOverlay').addEventListener('click', closeFeedback);
+        $('#continueBtn').addEventListener('click', closeFeedback);
+        document.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !isFeedbackOpen) onCheck(); if(e.key === 'Escape' && isFeedbackOpen) closeFeedback(); });
+      }
+
+      function hydrateVoices(){
+        if(!supportsSpeech) return;
+        const update = () => {
+          const voices = speechSynthesis.getVoices();
+          selectedVoice = voices.find(v => /ar/i.test(v.lang || '') || /arab/i.test(v.name || '')) || voices[0] || null;
+        };
+        update();
+        speechSynthesis.onvoiceschanged = update;
+      }
+
+      function syncTopBar(){
+        const pct = Math.round((state.stepIndex / lesson.length) * 100);
+        $('#progressText').textContent = `${pct}%`;
+        $('#progressBar').style.width = `${Math.min(pct, 100)}%`;
+        $('#hearts').textContent = '❤️'.repeat(state.hearts) + '🖤'.repeat(Math.max(0, 5 - state.hearts));
+        $('#xp').textContent = `${state.xp} XP`;
+        $('#streak').innerHTML = `<span class="text-amber-300"><i class="fa-solid fa-lamp-desk"></i></span><span>${state.streak} Days</span>`;
+      }
+
+      function render(){
+        syncTopBar();
+        renderPathRail();
+        const current = lesson[state.stepIndex];
+        if(!current){ completeLesson(); return; }
+        $('#lessonTitle').textContent = current.title;
+        $('#stepPill').textContent = `Step ${state.stepIndex + 1} of ${lesson.length}`;
+        stage.innerHTML = '';
+        if(current.type === 'flashcard') renderFlashcard(current);
+        if(current.type === 'match') renderMatch();
+        if(current.type === 'builder') renderBuilder();
+        stage.classList.remove('shake');
+        stage.classList.add('fade-enter');
+        setTimeout(() => stage.classList.remove('fade-enter'), 300);
+        saveState();
+      }
+
+      function renderPathRail(){
+        const rail = $('#pathRail');
+        const currentIndex = Math.min(state.stepIndex, lessonPath.length - 1);
+        const start = Math.max(0, currentIndex - 2);
+        const end = Math.min(lessonPath.length, start + 8);
+        rail.innerHTML = `<div class="flex gap-2 min-w-max">${lessonPath.slice(start, end).map((item, idx) => { const absoluteIndex = start + idx; const isCurrent = absoluteIndex === currentIndex; const isDone = absoluteIndex < currentIndex; const btnClass = isDone ? 'bg-emerald-400/20 text-emerald-200' : isCurrent ? 'bg-amber-300/20 text-amber-100 pulse-ring' : 'bg-white/6 text-white/55'; return `<div class="btn ${btnClass} rounded-2xl px-3 py-2 min-w-[130px] text-left border border-white/10 ${isCurrent ? 'shadow-[0_0_0_6px_rgba(233,196,106,.08)]' : ''}"><div class="text-[10px] uppercase tracking-[0.22em] opacity-70">${absoluteIndex + 1}/99</div><div class="arabic font-bold text-base leading-tight truncate">${item.arabic}</div><div class="text-[11px] opacity-70 truncate">${item.translit}</div></div>`; }).join('')}</div>`;
+      }
+
       function renderFlashcard(current){ const tpl = $('#flashcardTpl'); stage.appendChild(tpl.content.cloneNode(true)); const item = lessonPath[current.pathIndex] || lessonPath[0]; $('#flashMeta').textContent = `Name ${item.index + 1} of 99`; $('#flashTitle').textContent = item.translit; $('#flashArabic').textContent = item.arabic; $('#flashBn').textContent = item.bn; $('#flashMeaning').textContent = item.meaning; $('#flashCue').textContent = item.cue; $('#speakBtn').addEventListener('click', () => { speakArabic(item.arabic); burstSparkles($('#speakBtn')); $('#speakBtn').classList.add('tap-bounce'); setTimeout(() => $('#speakBtn').classList.remove('tap-bounce'), 180); }); }
       function renderMatch(){ const tpl = $('#matchTpl'); stage.appendChild(tpl.content.cloneNode(true)); renderMatchBoard(); }
       function renderMatchBoard(){ const grid = $('#matchGrid'); const solved = new Set(state.matchSolved); const leftCards = Object.keys(matchMap).filter(lbl => !solved.has(lbl) && !solved.has(matchMap[lbl])); const rightCards = matchRightShuffled.filter(lbl => !solved.has(lbl)); const leftCol = document.createElement('div'); leftCol.className = 'flex flex-col gap-2'; const rightCol = document.createElement('div'); rightCol.className = 'flex flex-col gap-2'; leftCards.forEach(label => leftCol.appendChild(makeMatchCard(label, 'left'))); rightCards.forEach(label => rightCol.appendChild(makeMatchCard(label, 'right'))); grid.innerHTML = ''; if(leftCards.length === 0 || rightCards.length === 0){ const done = document.createElement('div'); done.className = 'col-span-2 mt-2 done-pill rounded-2xl px-4 py-4 text-center'; done.innerHTML = '<div class="text-xl font-bold text-emerald-300 mb-1">All pairs matched</div><div class="text-white/70 text-sm">Great focus. Tap Check to continue.</div>'; grid.appendChild(done); } else { grid.appendChild(leftCol); grid.appendChild(rightCol); } }
