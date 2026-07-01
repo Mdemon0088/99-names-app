@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asma’ul Husna Learning Studio</title>
+  <meta name="theme-color" content="#0D1B2A" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root{
+      --bg:#0D1B2A;
+      --bg2:#10283d;
+      --card:#12263a;
+      --emerald:#2A9D8F;
+      --emerald2:#31b8a7;
+      --gold:#E9C46A;
+      --gold2:#f5d98a;
+      --text:#ecf4ff;
+      --muted:#9bb2c8;
+      --shadow: 0 24px 80px rgba(0,0,0,.35);
+      --ring: 0 0 0 2px rgba(233,196,106,.15), 0 0 35px rgba(42,157,143,.15);
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      color:var(--text);
+      overflow-x:hidden;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(233,196,106,.10), transparent 18%),
+        radial-gradient(circle at 85% 15%, rgba(42,157,143,.12), transparent 16%),
+        radial-gradient(circle at 50% 90%, rgba(255,255,255,.04), transparent 25%),
+        linear-gradient(180deg, #08111b 0%, var(--bg) 50%, #08111b 100%);
+    }
+    .arabic{
+      font-family: "Noto Naskh Arabic", "Amiri", "Scheherazade New", serif;
+      letter-spacing: .02em;
+      direction: rtl;
+      font-feature-settings: "rlig" 1, "calt" 1;
+    }
+    .glass{
+      background: linear-gradient(180deg, rgba(19,38,58,.92), rgba(14,28,43,.88));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+    .pattern{
+      position:absolute; inset:0; pointer-events:none; opacity:.13;
+      background-image:
+        linear-gradient(30deg, rgba(255,255,255,.08) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,.08) 87.5%, rgba(255,255,255,.08)),
+        linear-gradient(150deg, rgba(255,255,255,.08) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,.08) 87.5%, rgba(255,255,255,.08)),
+        linear-gradient(30deg, rgba(255,255,255,.08) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,.08) 87.5%, rgba(255,255,255,.08)),
+        linear-gradient(150deg, rgba(255,255,255,.08) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,.08) 87.5%, rgba(255,255,255,.08));
+      background-size: 48px 84px;
+      background-position: 0 0, 0 0, 24px 42px, 24px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), transparent 95%);
+    }
+    .soft-glow{box-shadow: 0 0 0 1px rgba(233,196,106,.08), 0 0 30px rgba(42,157,143,.10), 0 0 60px rgba(233,196,106,.04);} 
+    .btn{transition: transform .18s ease, box-shadow .18s ease, background .18s ease, opacity .18s ease; will-change: transform;}
+    .btn:active{transform: translateY(1px) scale(.99);} 
+    .btn-primary{background: linear-gradient(135deg, var(--emerald), var(--emerald2)); box-shadow: 0 12px 30px rgba(42,157,143,.25);}
+    .btn-gold{background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #1d2a36; box-shadow: 0 12px 30px rgba(233,196,106,.18);}
+    .btn-ghost{background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);}
+    .btn:hover{box-shadow: var(--ring);} 
+    .chip{background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);} 
+    .pulse-ring{animation: pulseRing 1.8s infinite ease-out;}
+    @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(233,196,106,.34)} 70%{box-shadow:0 0 0 18px rgba(233,196,106,0)} 100%{box-shadow:0 0 0 0 rgba(233,196,106,0)}}
+    .float-up{animation: floatUp .7s ease forwards;} 
+    @keyframes floatUp{0%{transform:translateY(10px);opacity:0} 100%{transform:translateY(0);opacity:1}}
+    .shake{animation: shake .42s ease-in-out;} 
+    @keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)}}
+    .pop{animation: pop .22s ease-out;} 
+    @keyframes pop{0%{transform:scale(.88)} 100%{transform:scale(1)}}
+    .slide-up{animation: slideUp .28s ease-out;} 
+    @keyframes slideUp{from{transform:translateY(18px); opacity:0} to{transform:translateY(0); opacity:1}}
+    .slide-in{animation: slideIn .28s ease-out;} 
+    @keyframes slideIn{from{transform:translateY(100%)} to{transform:translateY(0)}}
+    .done-pill{background: linear-gradient(135deg, rgba(42,157,143,.25), rgba(233,196,106,.18)); border:1px solid rgba(233,196,106,.20);} 
+    .letter-btn{min-width:52px; min-height:52px;}
+    .hidden-soft{opacity:.15; filter: blur(.5px); pointer-events:none; user-select:none;}
+    .feedback-overlay{background: linear-gradient(to top, rgba(7,12,18,.78), rgba(7,12,18,.08));}
+    .bottom-sheet{border-radius: 24px 24px 0 0;}
+    .progress-track{background: rgba(255,255,255,.08);}
+    .progress-fill{background: linear-gradient(90deg, var(--emerald), var(--gold)); transition: width .35s cubic-bezier(.2,.8,.2,1);} 
+    .calligraphy{
+      position:relative;
+      width:min(320px, 84vw);
+      aspect-ratio: 16/9;
+      margin:0 auto;
+      border-radius: 28px;
+      background: radial-gradient(circle at 50% 40%, rgba(233,196,106,.2), transparent 50%), linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      overflow:hidden;
+      border:1px solid rgba(233,196,106,.18);
+      box-shadow: 0 0 60px rgba(233,196,106,.10), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .calligraphy::before,.calligraphy::after{content:""; position:absolute; inset:-20%; background: conic-gradient(from 180deg, rgba(233,196,106,.0), rgba(233,196,106,.34), rgba(42,157,143,.0), rgba(233,196,106,.0)); animation: spin 7s linear infinite; opacity:.5;}
+    .calligraphy::after{inset:12%; background: radial-gradient(circle, rgba(233,196,106,.26), rgba(233,196,106,.02) 65%, transparent 70%); filter: blur(8px); animation-duration: 4.5s;}
+    @keyframes spin{to{transform:rotate(1turn)}}
+    .sparkle{position:absolute; border-radius:50%; pointer-events:none; background: radial-gradient(circle, rgba(255,255,255,1), rgba(255,255,255,.12) 45%, transparent 70%); animation: sparkle .8s ease forwards;}
+    @keyframes sparkle{0%{transform:scale(.2); opacity:0} 20%{opacity:1} 100%{transform:scale(1.8) translateY(-18px); opacity:0}}
+    .screen-stack{min-height: calc(100vh - 24px);} 
+    .tap-bounce{animation: tapBounce .18s ease;} 
+    @keyframes tapBounce{0%{transform:scale(1)} 50%{transform:scale(.96)} 100%{transform:scale(1)}}
+    .fade-enter{animation: fadeEnter .25s ease-out;} 
+    @keyframes fadeEnter{from{opacity:0; transform: translateY(8px)} to{opacity:1; transform: translateY(0)}}
+    .overlay-blur{backdrop-filter: blur(12px);} 
+    .safe-wrap{padding-bottom: env(safe-area-inset-bottom);}
+    .lesson-step{min-height: 480px;}
+    @media (max-width: 640px){.lesson-step{min-height: 520px;}}
+  </style>
+</head>
+<body class="selection:bg-emerald-400/25 selection:text-white">
+  <div class="pattern"></div>
+  <div class="fixed inset-0 pointer-events-none opacity-40" id="bgOrbit"></div>
+
+  <main class="relative z-10 min-h-screen flex items-center justify-center p-3 sm:p-4">
+    <div class="screen-stack w-full max-w-[460px] mx-auto flex flex-col justify-center">
+      <div id="app" class="glass soft-glow rounded-[32px] overflow-hidden border border-white/10 relative">
+        <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/5 via-transparent to-transparent"></div>
+        <header class="relative px-4 pt-4 pb-3 sm:px-5 sm:pt-5">
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <div class="text-[11px] uppercase tracking-[0.28em] text-white/45">Asma’ul Husna Studio</div>
+              <h1 class="text-xl sm:text-2xl font-semibold leading-tight">Learn with calm, joy, and remembrance</h1>
+            </div>
+            <button id="restartBtn" class="btn btn-ghost text-white/90 rounded-2xl px-3.5 py-2 text-sm flex items-center gap-2" aria-label="Restart lesson">
+              <i class="fa-solid fa-rotate-right"></i><span class="hidden sm:inline">Restart</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-3">
+            <div class="chip rounded-2xl px-3 py-2.5">
+              <div class="flex items-center justify-between mb-1 text-white/65 text-[11px] uppercase tracking-[0.18em]"><span>Progress</span><span id="progressText">0%</span></div>
+              <div class="progress-track h-2.5 rounded-full overflow-hidden"><div id="progressBar" class="progress-fill h-full rounded-full" style="width:0%"></div></div>
+            </div>
+            <div class="chip rounded-2xl px-3 py-2.5 flex items-center justify-between gap-3">
+              <div><div class="text-white/65 text-[11px] uppercase tracking-[0.18em] mb-1">Hearts</div><div id="hearts" class="text-lg font-semibold">❤️❤️❤️❤️❤️</div></div>
+              <div class="w-9 h-9 grid place-items-center rounded-xl bg-white/5 border border-white/8"><i class="fa-solid fa-heart text-rose-300"></i></div>
+            </div>
+            <div class="chip rounded-2xl px-3 py-2.5 flex items-center justify-between gap-3">
+              <div><div class="text-white/65 text-[11px] uppercase tracking-[0.18em] mb-1">Streak</div><div id="streak" class="text-lg font-semibold flex items-center gap-2"><span class="text-amber-300"><i class="fa-solid fa-lamp-desk"></i></span><span>3 Days</span></div></div>
+              <div class="w-9 h-9 grid place-items-center rounded-xl bg-white/5 border border-white/8"><i class="fa-solid fa-burn text-amber-300"></i></div>
+            </div>
+            <div class="chip rounded-2xl px-3 py-2.5 flex items-center justify-between gap-3">
+              <div><div class="text-white/65 text-[11px] uppercase tracking-[0.18em] mb-1">XP</div><div id="xp" class="text-lg font-semibold">0 XP</div></div>
+              <div class="w-9 h-9 grid place-items-center rounded-xl bg-white/5 border border-white/8"><i class="fa-solid fa-star text-amber-300"></i></div>
+            </div>
+          </div>
+        </header>
+
+        <section class="relative px-4 pb-4 sm:px-5 sm:pb-5">
+          <div class="flex items-center justify-between mb-3 text-xs text-white/55">
+            <div id="lessonTitle">Lesson 1 • Flashcard</div>
+            <div id="stepPill" class="done-pill rounded-full px-3 py-1 text-white/90">Step 1 of 3</div>
+          </div>
+          <div id="pathRail" class="mb-3 overflow-x-auto pb-2 -mx-1 px-1"></div>
+          <div id="stage" class="lesson-step relative rounded-[28px] overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.03] p-4 sm:p-5"></div>
+        </section>
+
+        <footer class="relative px-4 pb-4 sm:px-5 sm:pb-5 safe-wrap">
+          <div class="flex items-center gap-2">
+            <button id="hintBtn" class="btn btn-ghost rounded-2xl px-4 py-3 text-sm font-medium flex-1 flex items-center justify-center gap-2"><i class="fa-regular fa-lightbulb text-amber-300"></i><span>Hint</span></button>
+            <button id="checkBtn" class="btn btn-primary rounded-2xl px-5 py-3 text-sm font-semibold flex-[1.2] flex items-center justify-center gap-2"><i class="fa-solid fa-circle-check"></i><span>যাচাই করুন</span></button>
+          </div>
+          <div class="mt-3 text-center text-[11px] text-white/45">A serene, Duolingo-inspired practice path for the 99 Names of Allah</div>
+        </footer>
+      </div>
+    </div>
+  </main>
+
+  <div id="feedbackWrap" class="fixed inset-0 z-40 hidden">
+    <div id="feedbackOverlay" class="absolute inset-0 feedback-overlay overlay-blur opacity-0 transition-opacity duration-300"></div>
+    <div id="feedbackSheet" class="absolute left-0 right-0 bottom-0 translate-y-full transition-transform duration-300 ease-out">
+      <div class="max-w-[460px] mx-auto glass bottom-sheet border border-white/10 shadow-2xl overflow-hidden">
+        <div id="sheetBar" class="h-2 w-full bg-emerald-500/20"></div>
+        <div class="p-5 sm:p-6">
+          <div id="feedbackIconWrap" class="w-14 h-14 rounded-2xl grid place-items-center mb-4"><i id="feedbackIcon" class="fa-solid fa-circle-check text-2xl"></i></div>
+          <h2 id="feedbackTitle" class="text-2xl font-bold mb-2">চমৎকার!</h2>
+          <p id="feedbackText" class="text-white/72 leading-relaxed mb-5">সঠিক উত্তর হয়েছে।</p>
+          <div class="flex items-center justify-between gap-3">
+            <div id="feedbackMeta" class="text-sm text-white/55"></div>
+            <button id="continueBtn" class="btn btn-primary rounded-2xl px-5 py-3 font-semibold">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="gameOverWrap" class="fixed inset-0 z-30 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div class="relative glass rounded-[30px] border border-white/10 shadow-2xl max-w-md w-full p-6 text-center slide-up">
+      <div class="text-5xl mb-3">💔</div>
+      <h2 class="text-3xl font-bold mb-2">Game Over</h2>
+      <p class="text-white/70 mb-5">You ran out of hearts. Take a breath and try again.</p>
+      <button id="retryBtn" class="btn btn-gold rounded-2xl px-5 py-3 font-semibold w-full">Try Again</button>
+    </div>
+  </div>
+
+  <div id="completeWrap" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/55 backdrop-blur-md"></div>
+    <div class="relative glass rounded-[32px] border border-white/10 shadow-2xl max-w-[460px] w-full p-5 sm:p-6 text-center overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none opacity-25 bg-[radial-gradient(circle_at_50%_20%,rgba(233,196,106,.6),transparent_30%),radial-gradient(circle_at_20%_30%,rgba(42,157,143,.45),transparent_22%),radial-gradient(circle_at_80%_25%,rgba(233,196,106,.25),transparent_18%)]"></div>
+      <div class="relative">
+        <div class="text-5xl mb-3">🎉</div>
+        <h2 class="text-3xl sm:text-4xl font-black mb-2">পারফেক্ট লেসন!</h2>
+        <p class="text-white/72 mb-5">You completed the lesson with focus, calm, and success.</p>
+        <div class="calligraphy mb-5 grid place-items-center">
+          <div class="relative z-10 text-center px-4">
+            <div class="arabic text-4xl sm:text-5xl text-amber-200 font-extrabold mb-2">الرَّحِيمُ</div>
+            <div class="text-white/80 text-sm">Golden calligraphy placeholder</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-5">
+          <div class="chip rounded-2xl p-3"><div class="text-[11px] uppercase tracking-[0.18em] text-white/45 mb-1">XP Earned</div><div id="finalXp" class="text-xl font-bold text-amber-200">0</div></div>
+          <div class="chip rounded-2xl p-3"><div class="text-[11px] uppercase tracking-[0.18em] text-white/45 mb-1">Accuracy</div><div id="finalAcc" class="text-xl font-bold text-emerald-300">100%</div></div>
+          <div class="chip rounded-2xl p-3"><div class="text-[11px] uppercase tracking-[0.18em] text-white/45 mb-1">Streak</div><div id="finalStreak" class="text-xl font-bold text-amber-200">3</div></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="replayBtn" class="btn btn-ghost rounded-2xl px-4 py-3 font-semibold flex-1">Review Again</button>
+          <button id="nextLessonBtn" class="btn btn-primary rounded-2xl px-4 py-3 font-semibold flex-1">Next Lesson</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <template id="flashcardTpl">
+    <div class="h-full flex flex-col justify-between gap-4 fade-enter">
+      <div class="flex justify-between items-start gap-3">
+        <div>
+          <div id="flashMeta" class="text-white/45 text-xs uppercase tracking-[0.25em] mb-2">Intro view</div>
+          <h2 id="flashTitle" class="text-2xl sm:text-3xl font-black mb-2">Ar-Rahman</h2>
+          <p id="flashDesc" class="text-white/68 leading-relaxed max-w-[28rem]">The Name that opens the heart with mercy and a vast embrace of compassion.</p>
+        </div>
+        <div class="chip rounded-2xl px-3 py-2 text-xs text-white/70 hidden sm:block">Tap the speaker to hear pronunciation</div>
+      </div>
+      <div class="grid place-items-center flex-1 py-4">
+        <div class="relative">
+          <div class="absolute inset-0 rounded-full bg-amber-300/10 blur-2xl pulse-ring"></div>
+          <button id="speakBtn" class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full border border-white/10 bg-white/6 grid place-items-center btn tap-bounce soft-glow" aria-label="Play pronunciation">
+            <div class="absolute inset-3 rounded-full border border-amber-200/15 bg-gradient-to-br from-white/10 to-white/4 grid place-items-center">
+              <div class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400/25 to-amber-300/20 border border-white/10 grid place-items-center"><i class="fa-solid fa-volume-high text-3xl text-amber-200"></i></div>
+            </div>
+          </button>
+        </div>
+        <div class="mt-6 text-center">
+          <div id="flashArabic" class="arabic text-5xl sm:text-6xl font-extrabold text-amber-200">الرَّحْمَنُ</div>
+          <div id="flashBn" class="mt-2 text-sm text-white/60">পরম দয়াময়</div>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-3">
+        <div class="chip rounded-2xl p-3"><div class="text-xs text-white/45 uppercase tracking-[0.18em] mb-1">Meaning</div><div id="flashMeaning" class="text-sm">Mercy that surrounds all things.</div></div>
+        <div class="chip rounded-2xl p-3"><div class="text-xs text-white/45 uppercase tracking-[0.18em] mb-1">Memory cue</div><div id="flashCue" class="text-sm">“Rahman” feels wide, like mercy flowing everywhere.</div></div>
+        <div class="chip rounded-2xl p-3"><div class="text-xs text-white/45 uppercase tracking-[0.18em] mb-1">Action</div><div class="text-sm">Listen, repeat, then continue.</div></div>
+      </div>
+    </div>
+  </template>
+
+  <template id="matchTpl">
+    <div class="h-full flex flex-col gap-4 fade-enter">
+      <div>
+        <div class="text-white/45 text-xs uppercase tracking-[0.25em] mb-2">Match the pairs</div>
+        <h2 class="text-2xl sm:text-3xl font-black mb-2">Arabic Name ↔ Bengali Meaning</h2>
+        <p class="text-white/68">Tap one item from each column. When a pair is correct, it turns green and disappears.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 flex-1" id="matchGrid"></div>
+      <div class="chip rounded-2xl px-4 py-3 text-sm text-white/70">Goal: match <span class="text-amber-200 font-semibold">3 pairs</span> to complete this step.</div>
+    </div>
+  </template>
+
+  <template id="builderTpl">
+    <div class="h-full flex flex-col gap-4 fade-enter">
+      <div>
+        <div class="text-white/45 text-xs uppercase tracking-[0.25em] mb-2">Word builder</div>
+        <h2 class="text-2xl sm:text-3xl font-black mb-2">Build the Name</h2>
+        <p class="text-white/68">The Bengali prompt is <span class="text-amber-200 font-semibold">আর-রাহিম</span>. Tap letters in the correct sequence to build the Arabic form.</p>
+      </div>
+      <div class="chip rounded-[26px] p-4 sm:p-5">
+        <div class="flex items-center justify-between mb-3"><div class="text-xs uppercase tracking-[0.22em] text-white/45">Your answer</div><button id="clearBuilder" class="btn btn-ghost rounded-xl px-3 py-1.5 text-xs">Clear</button></div>
+        <div id="builderSlot" class="arabic min-h-[72px] flex items-center justify-end gap-2 text-4xl sm:text-5xl font-extrabold text-amber-200 break-words"></div>
+        <div class="mt-2 text-xs text-white/50">Target: الرَّحِيمُ</div>
+      </div>
+      <div class="grid grid-cols-3 gap-2" id="letterBank"></div>
+      <div class="chip rounded-2xl px-4 py-3 text-sm text-white/70">Tip: the answer is built from the letters in order: <span class="text-amber-200 font-semibold">ا ل ر ح ي م</span>.</div>
+    </div>
+  </template>
+
+  <script>
+    (() => {
+      const names99 = [
+        { arabic:'الرَّحْمَنُ', translit:'Ar-Rahman', bn:'পরম দয়াময়', en:'The Most Merciful', meaning:'Mercy that surrounds all things.', cue:'“Rahman” feels wide, like mercy flowing everywhere.' },
+        { arabic:'الرَّحِيمُ', translit:'Ar-Rahim', bn:'অতিশয় দয়ালু', en:'The Especially Merciful', meaning:'A special mercy for the believers.', cue:'Rahim feels personal and near.' },
+        { arabic:'الْمَلِكُ', translit:'Al-Malik', bn:'প্রকৃত রাজা', en:'The King', meaning:'The true sovereign over everything.', cue:'A king rules with authority.' },
+        { arabic:'الْقُدُّوسُ', translit:'Al-Quddus', bn:'অতি পবিত্র', en:'The Absolutely Pure', meaning:'Perfect and free from all imperfection.', cue:'Pure, sacred, and without flaw.' },
+        { arabic:'السَّلَامُ', translit:'As-Salam', bn:'শান্তির উৎস', en:'The Source of Peace', meaning:'From Him comes peace and safety.', cue:'Peace flows from the source.' },
+        { arabic:'الْمُؤْمِنُ', translit:'Al-Mu’min', bn:'নিরাপত্তা দানকারী', en:'The Giver of Security', meaning:'He grants trust and safety.', cue:'Security settles the heart.' },
+        { arabic:'الْمُهَيْمِنُ', translit:'Al-Muhaymin', bn:'সর্বদ্রষ্টা সংরক্ষক', en:'The Overseer', meaning:'He watches, guards, and preserves.', cue:'A watchful guardian.' },
+        { arabic:'الْعَزِيزُ', translit:'Al-Aziz', bn:'সর্বশক্তিমান', en:'The Almighty', meaning:'Mighty and honored beyond all.', cue:'Strength with honor.' },
+        { arabic:'الْجَبَّارُ', translit:'Al-Jabbar', bn:'পরাক্রমশালী', en:'The Compeller', meaning:'His will is irresistible.', cue:'Nothing can overcome Him.' },
+        { arabic:'الْمُتَكَبِّرُ', translit:'Al-Mutakabbir', bn:'সর্বমহিমান্বিত', en:'The Supremely Great', meaning:'Greatness belongs fully to Him.', cue:'Majesty beyond compare.' },
+        { arabic:'الْخَالِقُ', translit:'Al-Khaliq', bn:'স্রষ্টা', en:'The Creator', meaning:'He creates with knowledge and wisdom.', cue:'Creation begins with Him.' },
+        { arabic:'الْبَارِئُ', translit:'Al-Bari’', bn:'রূপদানকারী', en:'The Originator', meaning:'He brings creation into distinct form.', cue:'Form and precision.' },
+        { arabic:'الْمُصَوِّرُ', translit:'Al-Musawwir', bn:'আকৃতি দানকারী', en:'The Fashioner', meaning:'He gives every form its design.', cue:'Every shape is purposeful.' },
+        { arabic:'الْغَفَّارُ', translit:'Al-Ghaffar', bn:'অতিক্ষমাশীল', en:'The Forgiving', meaning:'He repeatedly forgives the servant.', cue:'Forgiveness that returns again.' },
+        { arabic:'الْقَهَّارُ', translit:'Al-Qahhar', bn:'দমনকারী', en:'The Subduer', meaning:'Nothing escapes His power.', cue:'Overpowering authority.' },
+        { arabic:'الْوَهَّابُ', translit:'Al-Wahhab', bn:'অসীম দানকারী', en:'The Bestower', meaning:'He gives freely and abundantly.', cue:'Gifts without limit.' },
+        { arabic:'الرَّزَّاقُ', translit:'Ar-Razzaq', bn:'রিজিকদাতা', en:'The Provider', meaning:'He sustains all created things.', cue:'Provision comes from Him.' },
+        { arabic:'الْفَتَّاحُ', translit:'Al-Fattah', bn:'উদ্বোধনকারী', en:'The Opener', meaning:'He opens paths and solutions.', cue:'Doors open by His will.' },
+        { arabic:'الْعَلِيمُ', translit:'Al-‘Alim', bn:'সর্বজ্ঞ', en:'The All-Knowing', meaning:'His knowledge covers all.', cue:'Nothing is hidden.' },
+        { arabic:'الْقَابِضُ', translit:'Al-Qabid', bn:'সংকোচনকারী', en:'The Withholder', meaning:'He restrains as He wills.', cue:'Holding back with wisdom.' },
+        { arabic:'الْبَاسِطُ', translit:'Al-Basit', bn:'প্রশস্তকারী', en:'The Extender', meaning:'He expands and grants ease.', cue:'Expansion and relief.' },
+        { arabic:'الْخَافِضُ', translit:'Al-Khafid', bn:'নিচুকারী', en:'The Abaser', meaning:'He humbles whom He wills.', cue:'Humility before greatness.' },
+        { arabic:'الرَّافِعُ', translit:'Ar-Rafi‘', bn:'উন্নতকারী', en:'The Exalter', meaning:'He raises ranks.', cue:'Elevation from Him.' },
+        { arabic:'الْمُعِزُّ', translit:'Al-Mu‘izz', bn:'সম্মানদাতা', en:'The Honourer', meaning:'He gives dignity and honor.', cue:'Honor is gifted.' },
+        { arabic:'الْمُذِلُّ', translit:'Al-Mudhill', bn:'অপমানকারী', en:'The Dishonorer', meaning:'He humbles the arrogant.', cue:'Pride is brought low.' },
+        { arabic:'السَّمِيعُ', translit:'As-Sami‘', bn:'সর্বশ্রোতা', en:'The All-Hearing', meaning:'He hears everything.', cue:'Every whisper is heard.' },
+        { arabic:'الْبَصِيرُ', translit:'Al-Basir', bn:'সর্বদ্রষ্টা', en:'The All-Seeing', meaning:'Nothing is unseen to Him.', cue:'Sight without limit.' },
+        { arabic:'الْحَكَمُ', translit:'Al-Hakam', bn:'বিচারক', en:'The Judge', meaning:'He judges with perfect justice.', cue:'Justice with wisdom.' },
+        { arabic:'الْعَدْلُ', translit:'Al-‘Adl', bn:'ন্যায়পরায়ণ', en:'The Utterly Just', meaning:'Perfect fairness belongs to Him.', cue:'Justice that never slips.' },
+        { arabic:'اللَّطِيفُ', translit:'Al-Latif', bn:'অতি সূক্ষ্মজ্ঞ', en:'The Subtle One', meaning:'Kindness in hidden ways.', cue:'Gentle care everywhere.' },
+        { arabic:'الْخَبِيرُ', translit:'Al-Khabir', bn:'সবকিছু অবগত', en:'The Aware', meaning:'Deep knowledge of all details.', cue:'Aware of the unseen.' },
+        { arabic:'الْحَلِيمُ', translit:'Al-Halim', bn:'অত্যন্ত সহিষ্ণু', en:'The Forbearing', meaning:'He delays punishment with patience.', cue:'Patience beyond measure.' },
+        { arabic:'الْعَظِيمُ', translit:'Al-‘Azim', bn:'মহিমান্বিত', en:'The Magnificent', meaning:'His greatness is immense.', cue:'Majesty without end.' },
+        { arabic:'الْغَفُورُ', translit:'Al-Ghafur', bn:'অতিক্ষমাকারী', en:'The Forgiving', meaning:'He covers and forgives sins.', cue:'Pardon and mercy.' },
+        { arabic:'الشَّكُورُ', translit:'Ash-Shakur', bn:'কৃতজ্ঞতার প্রতিদানকারী', en:'The Appreciative', meaning:'He rewards even the small deed.', cue:'Thankfulness is rewarded.' },
+        { arabic:'الْعَلِيُّ', translit:'Al-‘Aliyy', bn:'অতিউচ্চ', en:'The Most High', meaning:'He is exalted above all.', cue:'Above all heights.' },
+        { arabic:'الْكَبِيرُ', translit:'Al-Kabir', bn:'সর্ববৃহৎ', en:'The Greatest', meaning:'Great beyond comparison.', cue:'Nothing is greater.' },
+        { arabic:'الْحَفِيظُ', translit:'Al-Hafiz', bn:'রক্ষক', en:'The Preserver', meaning:'He protects and keeps.', cue:'Safeguarding all.' },
+        { arabic:'الْمُقِيتُ', translit:'Al-Muqit', bn:'জীবিকা দানকারী', en:'The Sustainer', meaning:'He provides nourishment.', cue:'Strengthening sustenance.' },
+        { arabic:'الْحَسِيبُ', translit:'Al-Hasib', bn:'হিসাবগ্রহণকারী', en:'The Reckoner', meaning:'He is sufficient and accounts for all.', cue:'Everything is counted.' },
+        { arabic:'الْجَلِيلُ', translit:'Al-Jalil', bn:'মহিমান্বিত', en:'The Majestic', meaning:'Majesty and greatness belong to Him.', cue:'Dignified grandeur.' },
+        { arabic:'الْكَرِيمُ', translit:'Al-Karim', bn:'অত্যন্ত দানশীল', en:'The Generous', meaning:'He gives freely and graciously.', cue:'Generosity without end.' },
+        { arabic:'الرَّقِيبُ', translit:'Ar-Raqib', bn:'পর্যবেক্ষক', en:'The Watchful', meaning:'He observes all things.', cue:'Ever watching.' },
+        { arabic:'الْمُجِيبُ', translit:'Al-Mujib', bn:'উত্তরদাতা', en:'The Responsive', meaning:'He answers those who call.', cue:'Dua is heard.' },
+        { arabic:'الْوَاسِعُ', translit:'Al-Wasi‘', bn:'সর্বব্যাপী', en:'The All-Encompassing', meaning:'His mercy and knowledge are vast.', cue:'Boundless expanse.' },
+        { arabic:'الْحَكِيمُ', translit:'Al-Hakim', bn:'প্রজ্ঞাময়', en:'The Wise', meaning:'Perfect wisdom in all decrees.', cue:'Wisdom in every act.' },
+        { arabic:'الْوَدُودُ', translit:'Al-Wadud', bn:'অতিশয় স্নেহশীল', en:'The Loving', meaning:'His love is deep and abundant.', cue:'Love that embraces.' },
+        { arabic:'الْمَجِيدُ', translit:'Al-Majid', bn:'মহিমান্বিত ও সম্মানিত', en:'The Glorious', meaning:'Glory and nobility belong to Him.', cue:'Glory in perfection.' },
+        { arabic:'الْبَاعِثُ', translit:'Al-Ba‘ith', bn:'পুনরুত্থানকারী', en:'The Resurrector', meaning:'He brings the dead back to life.', cue:'Life after death.' },
+        { arabic:'الشَّهِيدُ', translit:'Ash-Shahid', bn:'সাক্ষী', en:'The Witness', meaning:'He is present and witness over all.', cue:'Witness to all acts.' },
+        { arabic:'الْحَقُّ', translit:'Al-Haqq', bn:'সত্য', en:'The Truth', meaning:'Absolute truth is His reality.', cue:'Truth itself.' },
+        { arabic:'الْوَكِيلُ', translit:'Al-Wakil', bn:'কর্মবিধায়ক', en:'The Trustee', meaning:'One who is relied upon.', cue:'Trust fully placed.' },
+        { arabic:'الْقَوِيُّ', translit:'Al-Qawiyy', bn:'সর্বশক্তিমান', en:'The Strong', meaning:'Perfect strength.', cue:'Strength unbroken.' },
+        { arabic:'الْمَتِينُ', translit:'Al-Matin', bn:'সুদৃঢ়', en:'The Firm', meaning:'Unshakeable power and resolve.', cue:'Firm and steady.' },
+        { arabic:'الْوَلِيُّ', translit:'Al-Waliyy', bn:'অভিভাবক', en:'The Protecting Friend', meaning:'A close guardian and ally.', cue:'Near and caring.' },
+        { arabic:'الْحَمِيدُ', translit:'Al-Hamid', bn:'প্রশংসার যোগ্য', en:'The Praiseworthy', meaning:'All praise belongs to Him.', cue:'Praise returns to Him.' },
+        { arabic:'الْمُحْصِي', translit:'Al-Muhsi', bn:'পরিসংখ্যানকারী', en:'The Counter', meaning:'He enumerates everything.', cue:'Nothing is uncounted.' },
+        { arabic:'الْمُبْدِئُ', translit:'Al-Mubdi’', bn:'আরম্ভকারী', en:'The Originator', meaning:'He originates all beginnings.', cue:'The first beginning.' },
+        { arabic:'الْمُعِيدُ', translit:'Al-Mu‘id', bn:'পুনরাবর্তনকারী', en:'The Restorer', meaning:'He restores and brings back.', cue:'Return and renewal.' },
+        { arabic:'الْمُحْيِي', translit:'Al-Muhyi', bn:'জীবনদাতা', en:'The Giver of Life', meaning:'He gives life.', cue:'Life from Him.' },
+        { arabic:'الْمُمِيتُ', translit:'Al-Mumit', bn:'মৃত্যুদাতা', en:'The Bringer of Death', meaning:'He decrees death.', cue:'Life’s end by decree.' },
+        { arabic:'الْحَيُّ', translit:'Al-Hayy', bn:'চিরঞ্জীব', en:'The Ever-Living', meaning:'Life without end.', cue:'Always alive.' },
+        { arabic:'الْقَيُّومُ', translit:'Al-Qayyum', bn:'অধিষ্ঠানকারী', en:'The Sustainer', meaning:'Self-subsisting and sustaining all.', cue:'All depend on Him.' },
+        { arabic:'الْوَاجِدُ', translit:'Al-Wajid', bn:'প্রাপ্তিযোগ্য', en:'The Finder', meaning:'He finds and knows all.', cue:'Nothing is lost to Him.' },
+        { arabic:'الْمَاجِدُ', translit:'Al-Majid', bn:'মহিমাময়', en:'The Glorious', meaning:'Full of nobility and honor.', cue:'Glory with bounty.' },
+        { arabic:'الْوَاحِدُ', translit:'Al-Wahid', bn:'একক', en:'The One', meaning:'Uniqueness without partner.', cue:'Only One.' },
+        { arabic:'الْأَحَدُ', translit:'Al-Ahad', bn:'অদ্বিতীয়', en:'The Unique One', meaning:'Absolutely one and singular.', cue:'No equal.' },
+        { arabic:'الصَّمَدُ', translit:'As-Samad', bn:'অমুখাপেক্ষী', en:'The Eternal Refuge', meaning:'All depend on Him.', cue:'The one sought by all.' },
+        { arabic:'الْقَادِرُ', translit:'Al-Qadir', bn:'ক্ষমতাবান', en:'The Able', meaning:'Power over all things.', cue:'Capability without limit.' },
+        { arabic:'الْمُقْتَدِرُ', translit:'Al-Muqtadir', bn:'পূর্ণ ক্ষমতাবান', en:'The All-Determining', meaning:'Complete power and determination.', cue:'Absolute mastery.' },
+        { arabic:'الْمُقَدِّمُ', translit:'Al-Muqaddim', bn:'অগ্রসরকারী', en:'The Expediter', meaning:'He brings forward.', cue:'Advancing what He wills.' },
+        { arabic:'الْمُؤَخِّرُ', translit:'Al-Mu’akhkhir', bn:'পিছিয়ে দানকারী', en:'The Delayer', meaning:'He delays what He wills.', cue:'Timing with wisdom.' },
+        { arabic:'الْأَوَّلُ', translit:'Al-Awwal', bn:'আদি', en:'The First', meaning:'Before all beginnings.', cue:'No beginning before Him.' },
+        { arabic:'الْآخِرُ', translit:'Al-Akhir', bn:'অন্তিম', en:'The Last', meaning:'After all endings.', cue:'No end after Him.' },
+        { arabic:'الظَّاهِرُ', translit:'Az-Zahir', bn:'প্রকাশ্য', en:'The Manifest', meaning:'Clearly evident.', cue:'Manifest truth.' },
+        { arabic:'الْبَاطِنُ', translit:'Al-Batin', bn:'অন্তর্নিহিত', en:'The Hidden', meaning:'Beyond full human perception.', cue:'Hidden yet near.' },
+        { arabic:'الْوَالِي', translit:'Al-Wali', bn:'শাসক', en:'The Governor', meaning:'He manages all affairs.', cue:'Perfect governance.' },
+        { arabic:'الْمُتَعَالِي', translit:'Al-Muta‘ali', bn:'সর্বোচ্চ', en:'The Exalted', meaning:'High above all creation.', cue:'Transcendent greatness.' },
+        { arabic:'الْبَرُّ', translit:'Al-Barr', bn:'সদাশয়', en:'The Source of Goodness', meaning:'Excessively kind and benevolent.', cue:'Goodness in abundance.' },
+        { arabic:'التَّوَّابُ', translit:'At-Tawwab', bn:'অতিশয় তাওবা কবুলকারী', en:'The Ever-Pardoning', meaning:'He accepts repentance repeatedly.', cue:'Return is welcomed.' },
+        { arabic:'الْمُنْتَقِمُ', translit:'Al-Muntaqim', bn:'প্রতিশোধগ্রহণকারী', en:'The Avenger', meaning:'He brings rightful justice.', cue:'Justice answered.' },
+        { arabic:'الْعَفُوُّ', translit:'Al-‘Afuww', bn:'ক্ষমাকারী', en:'The Pardoner', meaning:'He erases sins.', cue:'Wiping away faults.' },
+        { arabic:'الرَّؤُوفُ', translit:'Ar-Ra’uf', bn:'অতিশয় দয়ালু', en:'The Kind', meaning:'Deeply compassionate and gentle.', cue:'Tender compassion.' },
+        { arabic:'مَالِكُ الْمُلْكِ', translit:'Malik al-Mulk', bn:'সাম্রাজ্যের মালিক', en:'Master of Sovereignty', meaning:'The owner of all dominion.', cue:'All rule belongs to Him.' },
+        { arabic:'ذُو الْجَلَالِ وَالإِكْرَامِ', translit:'Dhul-Jalali wal-Ikram', bn:'মহিমা ও সম্মানের অধিকারী', en:'Lord of Majesty and Honor', meaning:'Majesty and generosity combined.', cue:'Honor and grandeur.' },
+        { arabic:'الْمُقْسِطُ', translit:'Al-Muqsit', bn:'ন্যায়বিচারক', en:'The Equitable', meaning:'He is perfectly just.', cue:'Fairness personified.' },
+        { arabic:'الْجَامِعُ', translit:'Al-Jami‘', bn:'সমবেতকারী', en:'The Gatherer', meaning:'He gathers creation as He wills.', cue:'All will be gathered.' },
+        { arabic:'الْغَنِيُّ', translit:'Al-Ghaniyy', bn:'অমুখাপেক্ষী', en:'The Self-Sufficient', meaning:'He needs nothing.', cue:'Self-sufficient abundance.' },
+        { arabic:'الْمُغْنِي', translit:'Al-Mughni', bn:'ধনীকারী', en:'The Enricher', meaning:'He grants sufficiency and richness.', cue:'Enrichment from Him.' },
+        { arabic:'الْمَانِعُ', translit:'Al-Mani‘', bn:'নিবারণকারী', en:'The Withholder', meaning:'He prevents as He wills.', cue:'What is withheld is wisdom.' },
+        { arabic:'الضَّارُّ', translit:'Ad-Darr', bn:'ক্ষতিদানকারী', en:'The Distresser', meaning:'He decrees harm as a test or justice.', cue:'Trials with purpose.' },
+        { arabic:'النَّافِعُ', translit:'An-Nafi‘', bn:'উপকারকারী', en:'The Propitious', meaning:'He grants benefit and good.', cue:'Benefit from Him.' },
+        { arabic:'النُّورُ', translit:'An-Nur', bn:'জ্যোতি', en:'The Light', meaning:'The Light of the heavens and earth.', cue:'Guiding light.' },
+        { arabic:'الْهَادِي', translit:'Al-Hadi', bn:'পথপ্রদর্শক', en:'The Guide', meaning:'He guides whom He wills.', cue:'Guidance to the path.' },
+        { arabic:'الْبَدِيعُ', translit:'Al-Badi‘', bn:'অতুলনীয় স্রষ্টা', en:'The Originator of Beauty', meaning:'He creates without precedent.', cue:'Novel perfection.' },
+        { arabic:'الْبَاقِي', translit:'Al-Baqi', bn:'চিরস্থায়ী', en:'The Ever-Surviving', meaning:'He remains forever.', cue:'Enduring forever.' },
+        { arabic:'الْوَارِثُ', translit:'Al-Warith', bn:'উত্তরাধিকারী', en:'The Inheritor', meaning:'He inherits all after creation fades.', cue:'All returns to Him.' },
+        { arabic:'الرَّشِيدُ', translit:'Ar-Rashid', bn:'সৎপথ প্রদর্শক', en:'The Guide to Right Path', meaning:'He directs with wisdom.', cue:'Straight guidance.' },
+        { arabic:'الصَّبُورُ', translit:'As-Sabur', bn:'অত্যন্ত ধৈর্যশীল', en:'The Patient', meaning:'He is not hurried by sins or events.', cue:'Perfect patience.' }
+      ];
+
+      const lessonPath = names99.map((item, index) => ({ ...item, id:`name-${index+1}`, index }));
+      const storeKey = 'asmaul_husna_learning_studio_v2';
+      const defaultState = { stepIndex:0, xp:0, hearts:5, streak:3, correct:0, mistakes:0, completed:false, matchSolved:[], selectedMatch:null, builderInput:[], builderLocked:false, lastCompletedAt:null };
+      let state = loadState();
+      let isFeedbackOpen = false;
+      let isGameOver = false;
+      let lastFeedbackCorrect = true;
+      let matchRightShuffled = shuffle(['প্রকৃত রাজা','পরম দয়াময়','অতি পবিত্র']);
+      const $ = (sel) => document.querySelector(sel);
+      const stage = $('#stage');
+      const supportsSpeech = 'speechSynthesis' in window;
+      let selectedVoice = null;
+      const lesson = [
+        { id:'flashcard', type:'flashcard', title:'Lesson 1 • Flashcard', pathIndex:0 },
+        { id:'match', type:'match', title:'Lesson 2 • Match the pairs', pathIndex:1 },
+        { id:'builder', type:'builder', title:'Lesson 3 • Word Builder', pathIndex:1 }
+      ];
+      const matchMap = {
+        'الْمَلِكُ':'প্রকৃত রাজা',
+        'الرَّحْمَنُ':'পরম দয়াময়',
+        'الْقُدُّوسُ':'অতি পবিত্র'
+      };
+      const builderTarget = ['ا','ل','ر','ح','ي','م'];
+      const builderBank = ['م','ا','ح','ل','ي','ر','ن','ب','د'];
+
+      init();
+      function init(){ bindUI(); hydrateVoices(); render(); renderPathRail(); maybeCelebrateFromStorage(); }
+      function loadState(){ try{ const raw = localStorage.getItem(storeKey); if(!raw) return {...defaultState}; const parsed = JSON.parse(raw); return {...defaultState, ...parsed, matchSolved: parsed.matchSolved || [], builderInput: parsed.builderInput || []}; } catch { return {...defaultState}; } }
+      function saveState(){ localStorage.setItem(storeKey, JSON.stringify(state)); }
+      function bindUI(){ $('#restartBtn').addEventListener('click', resetLesson); $('#retryBtn').addEventListener('click', resetLesson); $('#replayBtn').addEventListener('click', resetLesson); $('#nextLessonBtn').addEventListener('click', resetLesson); $('#hintBtn').addEventListener('click', showHint); $('#checkBtn').addEventListener('click', onCheck); $('#feedbackOverlay').addEventListener('click', closeFeedback); $('#continueBtn').addEventListener('click', closeFeedback); document.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !isFeedbackOpen) onCheck(); if(e.key === 'Escape' && isFeedbackOpen) closeFeedback(); }); }
+      function hydrateVoices(){ if(!supportsSpeech) return; const update = () => { const voices = speechSynthesis.getVoices(); selectedVoice = voices.find(v => /ar/i.test(v.lang || '') || /arab/i.test(v.name || '')) || voices[0] || null; }; update(); speechSynthesis.onvoiceschanged = update; }
+      function syncTopBar(){ const pct = Math.round((state.stepIndex / lesson.length) * 100); $('#progressText').textContent = `${pct}%`; $('#progressBar').style.width = `${Math.min(pct, 100)}%`; $('#hearts').textContent = '❤️'.repeat(state.hearts) + '🖤'.repeat(Math.max(0, 5 - state.hearts)); $('#xp').textContent = `${state.xp} XP`; $('#streak').innerHTML = `<span class="text-amber-300"><i class="fa-solid fa-lamp-desk"></i></span><span>${state.streak} Days</span>`; }
+      function render(){ syncTopBar(); renderPathRail(); const current = lesson[state.stepIndex]; if(!current){ completeLesson(); return; } $('#lessonTitle').textContent = current.title; $('#stepPill').textContent = `Step ${state.stepIndex + 1} of ${lesson.length}`; stage.innerHTML = ''; if(current.type === 'flashcard') renderFlashcard(current); if(current.type === 'match') renderMatch(); if(current.type === 'builder') renderBuilder(); stage.classList.remove('shake'); stage.classList.add('fade-enter'); setTimeout(() => stage.classList.remove('fade-enter'), 300); saveState(); }
+      function renderPathRail(){ const rail = $('#pathRail'); const currentIndex = Math.min(state.stepIndex, lessonPath.length - 1); const start = Math.max(0, currentIndex - 2); const end = Math.min(lessonPath.length, start + 8); rail.innerHTML = `<div class="flex gap-2 min-w-max">${lessonPath.slice(start, end).map((item, idx) => { const absoluteIndex = start + idx; const isCurrent = absoluteIndex === currentIndex; const isDone = absoluteIndex < currentIndex; const btnClass = isDone ? 'bg-emerald-400/20 text-emerald-200' : isCurrent ? 'bg-amber-300/20 text-amber-100 pulse-ring' : 'bg-white/6 text-white/55'; return `<div class="btn ${btnClass} rounded-2xl px-3 py-2 min-w-[130px] text-left border border-white/10 ${isCurrent ? 'shadow-[0_0_0_6px_rgba(233,196,106,.08)]' : ''}"><div class="text-[10px] uppercase tracking-[0.22em] opacity-70">${absoluteIndex + 1}/99</div><div class="arabic font-bold text-base leading-tight truncate">${item.arabic}</div><div class="text-[11px] opacity-70 truncate">${item.translit}</div></div>`; }).join('')}</div>`; }
+      function renderFlashcard(current){ const tpl = $('#flashcardTpl'); stage.appendChild(tpl.content.cloneNode(true)); const item = lessonPath[current.pathIndex] || lessonPath[0]; $('#flashMeta').textContent = `Name ${item.index + 1} of 99`; $('#flashTitle').textContent = item.translit; $('#flashArabic').textContent = item.arabic; $('#flashBn').textContent = item.bn; $('#flashMeaning').textContent = item.meaning; $('#flashCue').textContent = item.cue; $('#speakBtn').addEventListener('click', () => { speakArabic(item.arabic); burstSparkles($('#speakBtn')); $('#speakBtn').classList.add('tap-bounce'); setTimeout(() => $('#speakBtn').classList.remove('tap-bounce'), 180); }); }
+      function renderMatch(){ const tpl = $('#matchTpl'); stage.appendChild(tpl.content.cloneNode(true)); renderMatchBoard(); }
+      function renderMatchBoard(){ const grid = $('#matchGrid'); const solved = new Set(state.matchSolved); const leftCards = Object.keys(matchMap).filter(lbl => !solved.has(lbl) && !solved.has(matchMap[lbl])); const rightCards = matchRightShuffled.filter(lbl => !solved.has(lbl)); const leftCol = document.createElement('div'); leftCol.className = 'flex flex-col gap-2'; const rightCol = document.createElement('div'); rightCol.className = 'flex flex-col gap-2'; leftCards.forEach(label => leftCol.appendChild(makeMatchCard(label, 'left'))); rightCards.forEach(label => rightCol.appendChild(makeMatchCard(label, 'right'))); grid.innerHTML = ''; if(leftCards.length === 0 || rightCards.length === 0){ const done = document.createElement('div'); done.className = 'col-span-2 mt-2 done-pill rounded-2xl px-4 py-4 text-center'; done.innerHTML = '<div class="text-xl font-bold text-emerald-300 mb-1">All pairs matched</div><div class="text-white/70 text-sm">Great focus. Tap Check to continue.</div>'; grid.appendChild(done); } else { grid.appendChild(leftCol); grid.appendChild(rightCol); } }
+      function makeMatchCard(label, side){ const isSelected = state.selectedMatch && state.selectedMatch.label === label && state.selectedMatch.side === side; const solved = state.matchSolved.includes(label) || state.matchSolved.includes(matchPairByMeaning(label)); const btn = document.createElement('button'); btn.type = 'button'; btn.className = `btn rounded-2xl p-4 text-left border border-white/10 bg-white/5 hover:bg-white/8 transition-all ${solved ? 'hidden-soft' : ''} ${isSelected ? 'ring-2 ring-amber-200/60 shadow-[0_0_0_6px_rgba(233,196,106,.08)]' : ''}`; btn.innerHTML = `<div class="text-[11px] uppercase tracking-[0.22em] text-white/40 mb-1">${side === 'left' ? 'Arabic' : 'Bengali'}</div><div class="${side === 'left' ? 'arabic text-3xl text-amber-200 font-extrabold' : 'text-lg font-semibold'}">${label}</div>`; btn.addEventListener('click', () => handleMatchSelect(label, side, btn)); return btn; }
+      function handleMatchSelect(label, side, btn){ btn.classList.add('pop'); setTimeout(() => btn.classList.remove('pop'), 180); if(state.selectedMatch && state.selectedMatch.side !== side){ const a = state.selectedMatch; const b = { label, side }; const isCorrect = isMatch(a, b); if(isCorrect){ const leftLabel = a.side === 'left' ? a.label : label; const meaning = a.side === 'right' ? a.label : label; state.matchSolved.push(leftLabel, meaning); state.correct += 1; state.selectedMatch = null; addXp(10); openFeedback(true, 'চমৎকার! সঠিক হয়েছে! 🎉', 'একটি জোড়া সঠিকভাবে মিলেছে।', '+10 XP', 'emerald'); renderMatchBoard(); if(state.matchSolved.length >= 6) state.lessonProgress = 2; } else { state.selectedMatch = null; wrongAnswer('ভুল হয়েছে! সঠিক জোড়াটি অন্যটি ছিল।'); } saveState(); } else { state.selectedMatch = { label, side }; renderMatchBoard(); } }
+      function isMatch(a, b){ const left = a.side === 'left' ? a.label : b.label; const right = a.side === 'right' ? a.label : b.label; return matchMap[left] === right; }
+      function matchPairByMeaning(meaning){ return Object.keys(matchMap).find(k => matchMap[k] === meaning); }
+      function renderBuilder(){ const tpl = $('#builderTpl'); stage.appendChild(tpl.content.cloneNode(true)); $('#clearBuilder').addEventListener('click', () => { state.builderInput = []; state.builderLocked = false; renderBuilderBoard(); saveState(); }); renderBuilderBoard(); }
+      function renderBuilderBoard(){ const slot = $('#builderSlot'); const bank = $('#letterBank'); slot.innerHTML = ''; bank.innerHTML = ''; state.builderInput.forEach((letter, idx) => { const bubble = document.createElement('span'); bubble.className = 'inline-flex items-center justify-center rounded-2xl px-3 py-2 bg-white/5 border border-white/10 min-w-[44px]'; bubble.innerHTML = `<span class="arabic">${letter}</span>`; bubble.title = `Position ${idx + 1}`; slot.appendChild(bubble); }); builderBank.forEach(l => { const btn = document.createElement('button'); btn.className = 'btn letter-btn rounded-2xl bg-white/6 border border-white/10 hover:bg-white/10 text-2xl sm:text-3xl arabic font-bold grid place-items-center'; btn.innerHTML = l; btn.addEventListener('click', () => { if(state.builderLocked) return; const next = builderTarget[state.builderInput.length]; if(l === next){ state.builderInput.push(l); state.correct += 1; btn.disabled = true; btn.classList.add('opacity-25','pointer-events-none'); renderBuilderBoard(); burstSparkles(btn); if(state.builderInput.length === builderTarget.length){ state.builderLocked = true; addXp(10); openFeedback(true, 'চমৎকার! সঠিক হয়েছে! 🎉', 'শব্দটি সঠিকভাবে তৈরি করা হয়েছে।', '+10 XP', 'emerald'); state.lessonProgress = 2; } } else { stage.classList.remove('shake'); void stage.offsetWidth; stage.classList.add('shake'); state.mistakes += 1; wrongAnswer('ভুল হয়েছে! সঠিক উত্তরটি দেখুন...'); loseHeart(); } saveState(); }); bank.appendChild(btn); }); if(state.builderInput.join('') === builderTarget.join('')) slot.innerHTML = `<span class="arabic text-5xl sm:text-6xl text-amber-200">الرَّحِيمُ</span>`; }
+      function onCheck(){ const current = lesson[state.stepIndex]; if(!current) return; if(current.type === 'flashcard'){ addXp(10); state.correct += 1; state.lessonProgress = 1; openFeedback(true, 'চমৎকার! সঠিক হয়েছে! 🎉', `আপনি ${lessonPath[current.pathIndex].translit} শিখেছেন।`, '+10 XP', 'emerald'); } else if(current.type === 'match'){ if(state.matchSolved.length >= 6){ addXp(10); state.correct += 1; state.lessonProgress = 2; openFeedback(true, 'চমৎকার! সঠিক হয়েছে! 🎉', 'সব জোড়া সঠিকভাবে মিলেছে।', '+10 XP', 'emerald'); } else { state.mistakes += 1; wrongAnswer('ভুল হয়েছে! সঠিক উত্তরটি দেখুন...'); loseHeart(); } } else if(current.type === 'builder'){ if(state.builderInput.join('') === builderTarget.join('')){ addXp(10); state.correct += 1; state.lessonProgress = 3; openFeedback(true, 'চমৎকার! সঠিক হয়েছে! 🎉', `শব্দটি নিখুঁতভাবে তৈরি হয়েছে: ${lessonPath[1].translit}`, '+10 XP', 'emerald'); } else { state.mistakes += 1; wrongAnswer('ভুল হয়েছে! সঠিক উত্তরটি দেখুন...'); loseHeart(); } } saveState(); }
+      function openFeedback(correct, title, text, meta, style){ isFeedbackOpen = true; lastFeedbackCorrect = correct; $('#feedbackWrap').classList.remove('hidden'); feedbackOverlay.classList.add('opacity-100'); feedbackSheet.classList.remove('translate-y-full'); feedbackSheet.classList.add('translate-y-0'); feedbackSheet.classList.add('slide-in'); feedbackTitle.textContent = title; feedbackText.textContent = text; feedbackMeta.textContent = meta || ''; sheetBar.className = `h-2 w-full ${style === 'emerald' ? 'bg-emerald-500/30' : 'bg-rose-500/30'}`; feedbackIcon.className = `fa-solid ${correct ? 'fa-circle-check' : 'fa-triangle-exclamation'} text-2xl`; feedbackIconWrap.className = `w-14 h-14 rounded-2xl grid place-items-center mb-4 ${correct ? 'bg-emerald-500/15 text-emerald-300' : 'bg-rose-500/15 text-rose-300'}`; if(!correct){ feedbackSheet.classList.add('shake'); setTimeout(() => feedbackSheet.classList.remove('shake'), 450); } }
+      function closeFeedback(){ if(!isFeedbackOpen) return; feedbackOverlay.classList.remove('opacity-100'); feedbackSheet.classList.remove('translate-y-0'); feedbackSheet.classList.add('translate-y-full'); setTimeout(() => $('#feedbackWrap').classList.add('hidden'), 260); isFeedbackOpen = false; if(lastFeedbackCorrect && !isGameOver){ if(state.stepIndex < lesson.length - 1){ state.stepIndex += 1; render(); } else completeLesson(); } saveState(); }
+      function wrongAnswer(message){ openFeedback(false, 'ভুল হয়েছে!', message, '-1 Heart', 'rose'); }
+      function loseHeart(){ state.hearts = Math.max(0, state.hearts - 1); syncTopBar(); saveState(); if(state.hearts <= 0){ isGameOver = true; $('#gameOverWrap').classList.remove('hidden'); $('#gameOverWrap').classList.add('flex'); } }
+      function addXp(amount){ state.xp += amount; syncTopBar(); saveState(); const pop = document.createElement('div'); pop.className = 'fixed z-[60] px-4 py-2 rounded-full bg-amber-300 text-slate-900 font-bold shadow-xl pointer-events-none'; pop.textContent = `+${amount} XP`; document.body.appendChild(pop); const rect = $('#xp').getBoundingClientRect(); pop.style.left = `${Math.max(12, rect.left - 8)}px`; pop.style.top = `${Math.max(12, rect.top - 44)}px`; pop.classList.add('float-up'); setTimeout(() => pop.remove(), 900); }
+      function showHint(){ const current = lesson[state.stepIndex]; if(!current) return; if(current.type === 'flashcard') openFeedback(true, 'Hint', 'Listen to the Arabic pronunciation and repeat it softly.', 'Tap the speaker icon', 'emerald'); if(current.type === 'match') openFeedback(true, 'Hint', 'Find الرَّحْمَنُ and match it with পরম দয়াময়.', 'Use the left and right columns', 'emerald'); if(current.type === 'builder') openFeedback(true, 'Hint', 'Build the word from the sequence: ا → ل → ر → ح → ي → م', 'Tap in order', 'emerald'); }
+      function speakArabic(text){ if(!supportsSpeech){ burstSparkles($('#stage')); return; } try{ speechSynthesis.cancel(); const utter = new SpeechSynthesisUtterance(text); utter.lang = 'ar-SA'; utter.rate = 0.9; utter.pitch = 0.9; if(selectedVoice) utter.voice = selectedVoice; speechSynthesis.speak(utter); } catch(e){ console.warn(e); } }
+      function burstSparkles(anchor){ const rect = anchor.getBoundingClientRect(); for(let i=0;i<10;i++){ const s = document.createElement('div'); s.className = 'sparkle'; const size = 6 + Math.random()*12; s.style.width = `${size}px`; s.style.height = `${size}px`; s.style.left = `${rect.left + rect.width/2 + (Math.random()*120 - 60)}px`; s.style.top = `${rect.top + rect.height/2 + (Math.random()*60 - 30)}px`; s.style.animationDelay = `${Math.random()*0.12}s`; document.body.appendChild(s); setTimeout(() => s.remove(), 900); } }
+      function completeLesson(){ state.completed = true; state.lastCompletedAt = new Date().toISOString(); saveState(); $('#finalXp').textContent = state.xp; $('#finalAcc').textContent = `${Math.max(0, Math.min(100, Math.round((state.correct / Math.max(1, state.correct + state.mistakes)) * 100)))}%`; $('#finalStreak').textContent = state.streak; $('#completeWrap').classList.remove('hidden'); $('#completeWrap').classList.add('flex'); launchConfetti(); }
+      function launchConfetti(){ const colors = ['#E9C46A','#2A9D8F','#ffffff','#c9f1ea']; for(let i=0;i<42;i++){ const piece = document.createElement('div'); piece.className = 'fixed z-[70] pointer-events-none'; piece.style.width = `${6 + Math.random()*8}px`; piece.style.height = `${10 + Math.random()*16}px`; piece.style.left = `${50 + (Math.random()*42 - 21)}vw`; piece.style.top = `${15 + Math.random()*18}vh`; piece.style.background = colors[i % colors.length]; piece.style.opacity = .9; piece.style.transform = `rotate(${Math.random()*180}deg)`; piece.style.borderRadius = `${Math.random() > .5 ? '999px' : '4px'}`; piece.animate([{ transform:`translate3d(0,0,0) rotate(0deg)`, opacity:1 }, { transform:`translate3d(${(Math.random()*2-1)*160}px, ${140 + Math.random()*220}px, 0) rotate(${220 + Math.random()*240}deg)`, opacity:0 }], { duration: 1800 + Math.random()*700, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }); document.body.appendChild(piece); setTimeout(() => piece.remove(), 2800); } }
+      function resetLesson(){ state = {...defaultState, matchSolved:[], selectedMatch:null, builderInput:[], builderLocked:false}; isFeedbackOpen = false; isGameOver = false; matchRightShuffled = shuffle(['প্রকৃত রাজা','পরম দয়াময়','অতি পবিত্র']); localStorage.setItem(storeKey, JSON.stringify(state)); $('#gameOverWrap').classList.add('hidden'); $('#gameOverWrap').classList.remove('flex'); $('#completeWrap').classList.add('hidden'); $('#completeWrap').classList.remove('flex'); $('#feedbackWrap').classList.add('hidden'); render(); }
+      function maybeCelebrateFromStorage(){ if(state.completed && state.stepIndex >= lesson.length){ $('#finalXp').textContent = state.xp; $('#finalAcc').textContent = `${Math.max(0, Math.min(100, Math.round((state.correct / Math.max(1, state.correct + state.mistakes)) * 100)))}%`; $('#finalStreak').textContent = state.streak; $('#completeWrap').classList.remove('hidden'); $('#completeWrap').classList.add('flex'); } }
+      const orbit = $('#bgOrbit');
+      for(let i=0;i<10;i++){ const dot = document.createElement('div'); dot.style.position = 'absolute'; dot.style.left = `${10 + Math.random()*80}%`; dot.style.top = `${8 + Math.random()*82}%`; dot.style.width = `${3 + Math.random()*6}px`; dot.style.height = dot.style.width; dot.style.borderRadius = '999px'; dot.style.background = i % 2 ? 'rgba(233,196,106,.28)' : 'rgba(42,157,143,.25)'; dot.style.boxShadow = '0 0 12px rgba(255,255,255,.06)'; dot.animate([{ transform:'translate3d(0,0,0) scale(1)', opacity:.35 }, { transform:`translate3d(${Math.random()*24-12}px, ${Math.random()*-18-8}px, 0) scale(${1.2 + Math.random()*1.4})`, opacity:.85 }, { transform:'translate3d(0,0,0) scale(1)', opacity:.35 }], { duration: 6000 + Math.random()*5000, iterations: Infinity, easing:'ease-in-out' }); orbit.appendChild(dot); }
+      render();
+    })();
+  </script>
+</body>
+</html>
