@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="99 Names App Icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D1B2A"/>
+      <stop offset="100%" stop-color="#12263a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E9C46A"/>
+      <stop offset="100%" stop-color="#f5d98a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#2A9D8F" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2A9D8F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+  <circle cx="256" cy="192" r="148" fill="url(#glow)"/>
+  <circle cx="256" cy="256" r="154" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="8"/>
+  <path d="M256 118c-55 0-100 45-100 100 0 33 16 62 41 80-10 21-33 37-60 40 34 14 74 10 103-12 5 1 11 1 16 1 55 0 100-45 100-100s-45-109-100-109Z" fill="url(#gold)" opacity="0.95"/>
+  <path d="M214 204c20-30 67-28 80 7 8 22 0 44-19 56-22 14-53 10-68-10-10-14-11-34 7-53Z" fill="#0D1B2A" opacity="0.95"/>
+  <path d="M186 342h140" stroke="url(#gold)" stroke-width="18" stroke-linecap="round"/>
+  <text x="256" y="386" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#ecf4ff">99 Names</text>
+</svg>
