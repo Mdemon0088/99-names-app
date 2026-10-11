@@ -21,6 +21,11 @@ public final class MainActivity extends Activity {
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(false);
+        settings.setJavaScriptCanOpenWindowsAutomatically(false);
+        settings.setSupportMultipleWindows(false);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(false);
+        settings.setTextZoom(100);
         web.setWebViewClient(new WebViewClient());
         web.loadUrl("file:///android_asset/index.html");
         setContentView(web, new ViewGroup.LayoutParams(
