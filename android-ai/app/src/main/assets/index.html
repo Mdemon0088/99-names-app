@@ -67,7 +67,7 @@ function persistMessages(){store.set('nur_ai_messages',messages.slice(-80));rend
 function buildPayload(){
  const mem=memories.slice(-30).map((m,i)=>(i+1)+'. '+m.text).join('\n');
  const system=defaultSystem+(mem?'\n\nUser-approved saved memories (may be incomplete or outdated; use only when relevant):\n'+mem:'');
- return [{role:'system',content:system},...messages.filter(m=>!m.error).slice(-20).map(m=>({role:m.role,content:m.content}))];
+ return [{role:'system',content:system},...messages.filter(m=>!m.error&&!m.pending).slice(-20).map(m=>({role:m.role,content:m.content}))];
 }
 function switchView(view){
  ['chatView','memoryView','settingsView'].forEach(id=>$(id).classList.toggle('hidden',id!==view+'View'));
@@ -104,7 +104,7 @@ function send(){
  const id='r'+(++requestSeq)+'_'+Date.now();
  const wait={role:'assistant',content:'ভাবছি…',pending:true};messages.push(wait);renderChat();
  pending[id]=wait;
- try{AndroidAI.sendChat(id,JSON.stringify(buildPayload().slice(0,-1).concat([{role:'user',content:text}]).slice(-22)));}
+ try{AndroidAI.sendChat(id,JSON.stringify(buildPayload()));}
  catch(e){delete pending[id];messages.pop();messages.push({role:'assistant',content:'অনুরোধ পাঠানো যায়নি: '+e.message,error:true});finish()}
 }
 function finish(){busy=false;$('send').disabled=false;$('send').textContent='পাঠান ↑';persistMessages()}
